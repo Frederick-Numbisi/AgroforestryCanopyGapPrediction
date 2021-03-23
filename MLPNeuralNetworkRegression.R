@@ -1,5 +1,5 @@
 
-
+# Install and load the necessary libraries or packages
 
 install.packages("tensorflow")
 install.packages("keras")
@@ -26,8 +26,6 @@ Sys.setenv(TENSORFLOW_PYTHON="/usr/local/bin/python")
 sess = tf$Session()
 hello <- tf$constant('Hello, TensorFlow!')
 sess$run(hello)
-
-
 
 
 #  REGRESSION TRIAL WITH TENSORFLOW
@@ -85,7 +83,6 @@ train_labels[1:10] # Display first 10 entries
 
 # NORMALISING THE MODEL
 
-
 # Test data is *not* used when calculating the mean and std.
 
 # Normalize training data
@@ -100,10 +97,7 @@ train_data[1, ] # First training sample, normalized
 
 
 
-
-
 # CREATING THE MODEL
-
 
 build_model <- function() {
   
