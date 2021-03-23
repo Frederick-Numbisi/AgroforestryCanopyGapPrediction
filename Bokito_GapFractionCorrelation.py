@@ -12,13 +12,15 @@ Created on Tue Jan 30 22:59:26 2018
 @author: Fred
 """
 
+# Import the require python libraries
+
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-
+# Read the datasets in the same directory or folder where the python is save
 Bok_Gapfraction = pd.read_csv('Bokito_GapFraction2016n2017.csv')
 Bok_Gamma0 = pd.read_csv('Bokito_Extracted_SAR_Gamma0db.csv')
 
@@ -40,7 +42,7 @@ Gamma0mean.to_csv("Bok_Gamma0mean.csv")
 
 print(Bok_Gapfraction.columns)
 
-# Summarize Gap Fractions dataframe by the mean in each Plot
+# Summarize Gap Fractions dataframe by the mean for each sample Plot
 
 Bok_GFmean = Bok_Gapfraction.groupby(['PlotID','Year'])[['no_of_gaps', 'gap_area', 'gap_fraction']].std()
 
