@@ -1,11 +1,7 @@
 
-
-#------------------------------------------------------------------------------
-
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-
 # SPATIALLY EXPLICIT GAP FRACTION PREDICTION BY Random Forest
+
+# Load the required packages
 
 library(ggplot2)
 library(MASS)
@@ -17,8 +13,7 @@ library(leaps)
 library(tidyverse)
 
 
-
-setwd("C:/Users/Fred/Documents/GapFraction_S1A_SAR_Bokito_Minto/Bokito2017_SAR_4_GapFraction")
+setwd("the directory of your choices to locate your datasets")
 
 #install.packages("ModelMap")
 
