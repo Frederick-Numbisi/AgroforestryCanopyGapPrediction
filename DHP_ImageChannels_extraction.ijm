@@ -1,7 +1,7 @@
 
-//Batch splitting of image channels for images in a directory
+//Split the colour channels of DHP images in a directory using a batch processing 
 /*
-At the moment it saves the results to a new directory called "ImageChannels". 
+At the moment, this script saves the results to a new directory called "ImageChannels". 
 If you want to save the result files in the same directory 
 as your original files delete the line "dir2 = ....." and change 
 in the first lane "dir1" into "dir2" 
