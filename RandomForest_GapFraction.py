@@ -18,8 +18,6 @@ features = pd.read_csv('BokEfoul_Gamma0GF.csv') # read data set using pandas
 features.head(5)
 
 print(features.info()) # Overview of dataset
-#features.loc[(features['luse'] == 'B_Co') or (features['luse'] == 'E_Co'),'UseClass'] = 'cafs'
-#features.loc[(features['luse'] == 'B_Sf') or (features['luse'] == 'E_Sf'),'UseClass'] = 'sf'
 
 CAFS = ['E_Co','B_Co']
 SF = ['E_Sf','B_Sf']
@@ -72,7 +70,7 @@ features = np.array(features)
 
 
 #----------------------------
-# Using Skicit-learn to split data into training and testing sets
+# Use Skicit-learn to split data into training and testing sets
 from sklearn.model_selection import train_test_split
 
 # Split the data into training and testing sets
@@ -90,10 +88,8 @@ np.savetxt('test_features.csv', test_features, delimiter=",")
 np.savetxt('test_labels.csv', test_labels, delimiter=",")
 
 
-
-
 # The baseline predictions are the average (global) gap fraction for all sampled plot
-#baseline_preds = 14.28 # Global mean of Gap Fraction for all plots
+# baseline_preds = 14.28 # Global mean of Gap Fraction for all plots
 baseline_preds = np.mean(test_labels) # mean Gap Fraction for the test dataset
 baseline_preds
 
@@ -154,10 +150,6 @@ mape = 100 * (errors / test_labels)
 # Calculate and display accuracy
 accuracy = 100 - np.mean(mape)
 print('Accuracy:', round(accuracy, 2), '%.')
-
-
-
-#TestPred = pd.concat([pd.Dataframe(test_labels), pd.Dataframe(predictions)])
 
 
 
