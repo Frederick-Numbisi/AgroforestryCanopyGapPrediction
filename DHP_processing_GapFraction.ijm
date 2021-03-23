@@ -1,5 +1,6 @@
-) Estimation of Canopy Gap Fraction –a percentage of sky pixels in each DHP.
-Adapted from the Hemispherical_2.0 script of Beckschäfer (2015)
+Estimation of Canopy Gap Fraction â€“a percentage of sky pixels in each DHP. 
+This script was adapted from the Hemispherical_2.0 script of BeckschÃ¤fer (2015), 
+and the author was credited accordingly in the published paper that is accessibly via the link https://doi.org/10.3390/rs12244163
 /**
  The macro batch processes large quantities of both digital
  hemispherical and non-hemispherical canopy photographs.
