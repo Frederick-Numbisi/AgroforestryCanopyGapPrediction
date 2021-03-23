@@ -1,14 +1,12 @@
+
+# Load the following required packages.
+
 #library(sp)
 #library(spatstat)
 #library(maptools)
 library(ggplot2)
 library(MASS)
 library(caret)
-
-#install.packages('leaps')
-#install.packages('tidyverse')
-#install.packages('dplyr')
-#install.packages('haven')
 
 library(haven)
 library(dplyr)
@@ -21,7 +19,9 @@ library(boot)
 library(caret)
 library(car)
 
-setwd("D:/PhD Manuscript/PhD Article Manuscripts/ArticleManuscripts/RemoteSensingManuscript")
+# Set the working directory for your analyses
+
+setwd("path to the directory that contains your dataset")
 
 
 Data = read.csv("BokEfoul_Gamma0GF.csv")
@@ -34,8 +34,6 @@ library(dplyr)
 Data2 = subset(Data, select = -c(PlotID, luse, no_of_gaps, gap_area))
 
 
-#------------------------------------------------------------
-#------------------------------------------------------------
 #------------------------------------------------------------
 
 #STEPWISE REGRESSION FOR THE SECOND SET OF datasets
@@ -52,7 +50,6 @@ library(dplyr)
 Data2p = subset(pixelData, select = -c(PlotID, Site, Year, X, no_of_gaps, gap_area))
 
 View(Data2p)
-
 
 
 #-------------------------------
@@ -99,9 +96,7 @@ summary(pixelFinal_model)
 
 
 
-
-# To GET BETTER COEFFICIENTS
-
+# To GET BETA COEFFICIENTS
 #install.packages("lm.beta")
 
 library(lm.beta)
