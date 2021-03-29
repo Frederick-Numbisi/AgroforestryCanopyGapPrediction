@@ -24,28 +24,15 @@ library(car)
 setwd("path to the directory that contains your dataset")
 
 
-Data = read.csv("BokEfoul_Gamma0GF.csv")
-Data[1:5,]
-
-library(dplyr)
-
-
-# Drop some columns from the data frame
-Data2 = subset(Data, select = -c(PlotID, luse, no_of_gaps, gap_area))
-
-
 #------------------------------------------------------------
 
 #STEPWISE REGRESSION FOR THE SECOND SET OF datasets
 # EXTRACTED SAR BACKSCATTER FROM 5 PIXEL MASKS OF DHP LOCATIONS IN EACH PLOT
 
-
-
+# Read and view dataframe
 pixelData = read.csv('BokEfoul_Gamma0GFpixels.csv')
 View(pixelData)
 
-
-library(dplyr)
 # Drop some columns from the data frame
 Data2p = subset(pixelData, select = -c(PlotID, Site, Year, X, no_of_gaps, gap_area))
 
@@ -67,9 +54,6 @@ set.seed(123)
 # use 10-fold cross-validation to estimate the average prediction error (RMSE) of each of the models
 train.control <- trainControl(method = "cv", number = 10)
 
-#Data2b = mutate(Data2, logGF = log10(gap_fraction)) # transform gap fraction and store in column logGF
-#Data2b = select(Data2b, -c(gap_fraction))
-
 # Train the model
 step.model <- train(gap_fraction~., data = Data2p,
                     method = "lmStepAIC", 
@@ -84,15 +68,12 @@ step.model$finalModel
 summary(step.model$finalModel)
 
 
-
 pixelFinal_model = lm(gap_fraction ~ Gamma0VV + Gamma0VVdb + VVVHratio + VHVVratio, data = Data2p)
 #logFinal_model = lm(logGF ~ Gamma0VH + Gamma0VVdb + VH.VVonVH.VV + VVVHratio + VV.VHonVV.VH, data = Data2b)
 
 pixelFinal_model
-#logFinal_model
 
 summary(pixelFinal_model)
-#summary(logFinal_model)
 
 
 
@@ -107,16 +88,9 @@ summary(pixelFinal_model.beta)
 coef(pixelFinal_model.beta)
 
 
-
-#par("mar")
-par(mar=c(2.1,2.1,2.1,2.1))
 #par(mar=c(5.1, 4.1, 4.1, 2.1)) # this is the diffault margin setting for par
 # Visualise the model prediction and residuals
 par(mfrow=c(2,2))
-
-plot(pixelFinal_model)
-
-par(mfrow=c(1,1))
 
 plot(pixelFinal_model)
 
@@ -124,15 +98,11 @@ plot(pixelFinal_model)
 #--------------------------
 #A1) STEPWISE REGRESSION WITH BOOTSTRAP FOR MODEL B (pixel based data)
 
-
 pixelData = read.csv('BokEfoul_Gamma0GFpixels.csv')
 View(pixelData)
 
-library(dplyr)
 # Drop some columns from the data frame
 Data2p = subset(pixelData, select = -c(PlotID, Site, Year, X, no_of_gaps, gap_area))
-
-
 
 # Fit the full model 
 full.modelB <- lm(gap_fraction ~., data = Data2p)
@@ -205,7 +175,6 @@ Data2p_diag$cooks.dist = cooks.distance(modelB_fin)
 Data2p_diag$dfbeta = dfbeta(modelB_fin)
 
 
-
 # round up values for summary statistics
 round(stat.desc(Data2p[, c("Gamma0VV", "Gamma0VVdb", "VVVHratio", "VHVVratio")], basic=FALSE, norm=TRUE), digits = 3)
 
@@ -237,7 +206,6 @@ hist.VVVH = ggplot(Data2p, aes(VVVHratio)) + opt(legend.position = "none") +
   stat_function(fun = dnorm, args = list(mean = mean(Data2p$VVVHratio, na.rm = TRUE), 
                                          sd(Data2p$VVVHratio, na.rm = TRUE)), colour = "black", size = 1)
 
-
 hist.VVVH
 
 
@@ -253,6 +221,7 @@ Aresiduals.ecdf = Ecdf(Data2p_diag$stdd.residuals)
 
 Data2p_diag$large.residual = Data2p_diag$stdd.residuals > 2 | Data2p_diag$stdd.residuals < -2
 sum(Data2p_diag$large.residual)
+
 
 # MODEL DIAGNOSTICS
 # Remove model outliers and cases with large standardized residuals (>2) based on ModelB_fin
