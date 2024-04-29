@@ -99,7 +99,7 @@ train_data[1, ] # First training sample, normalized
 
 # CREATING THE MODEL
 
-build_model <- function() {
+build_model1 <- function() {
   
   model <- keras_model_sequential() %>%
     layer_dense(units = 128, activation = "relu",
@@ -120,8 +120,8 @@ build_model <- function() {
   model
 }
 
-model <- build_model()
-model %>% summary()
+model1 <- build_model1()
+model1 %>% summary()
 
 
 
@@ -138,7 +138,7 @@ print_dot_callback <- callback_lambda(
 epochs <- 100
 
 # Fit the model and store training stats
-history <- model %>% fit(
+history1 <- model1 %>% fit(
   train_data,
   train_labels,
   epochs = epochs,
@@ -152,10 +152,10 @@ history <- model %>% fit(
 
 library(ggplot2)
 
-#plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
+#plot(history1, metrics = "mean_absolute_error", smooth = FALSE) +
 #  coord_cartesian(ylim = c(0, 5))
 
-plot(history, metrics = "mean_absolute_error", smooth = FALSE) 
+plot(history1, metrics = "mean_absolute_error", smooth = FALSE) 
 
 
 #This graph shows little improvement in the model after about 150 epochs. 
@@ -165,11 +165,11 @@ plot(history, metrics = "mean_absolute_error", smooth = FALSE)
 #it automatically stops the training.
 
 
+# Estimate early stopping value
 # The patience parameter is the amount of epochs to check for improvement.
 early_stop <- callback_early_stopping(monitor = "val_loss", patience = 50)
 
-model <- build_model()
-history <- model %>% fit(
+history2 <- model1 %>% fit(
   train_data,
   train_labels,
   epochs = epochs,
@@ -178,7 +178,7 @@ history <- model %>% fit(
   callbacks = list(early_stop, print_dot_callback)
 )
 
-plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
+plot(history2, metrics = "mean_absolute_error", smooth = FALSE) +
   coord_cartesian(xlim = c(0, 100), ylim = c(0, 16)) #
 
 
