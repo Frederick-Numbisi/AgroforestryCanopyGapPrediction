@@ -183,20 +183,20 @@ plot(history2, metrics = "mean_absolute_error", smooth = FALSE) +
 
 
 
-# Let's see how did the model performs on the test set:
+# Let's see how did the model1 performs on the test set:
   
-c(loss, mae) %<-% (model %>% evaluate(test_data, test_labels, verbose = 0))
+c(loss, mae) %<-% (model1 %>% evaluate(test_data, test_labels, verbose = 0))
 
 paste0("Mean absolute error on test set:", sprintf("%.2f", mae),"%")
 
-model %>% evaluate(test_data, test_labels)
+model1 %>% evaluate(test_data, test_labels)
 
 
 
 # PREDICT 
 # Predict some Gap Fraction using data in the testing set:
 
-test_predictions <- model %>% predict(test_data)
+test_predictions <- model1 %>% predict(test_data)
 test_predictions[ , 1]
 
 mean((test_labels-test_predictions)^2)
@@ -211,7 +211,7 @@ plot(test_predictions,test_labels)
 # CREATING THE MODEL
 
 
-build_model <- function() {
+build_model2 <- function() {
   
   model <- keras_model_sequential() %>%
     layer_dense(units = 128, activation = "tanh", bias_regularizer = regularizer_l2(0.01),
@@ -233,8 +233,8 @@ build_model <- function() {
   model
 }
 
-model <- build_model()
-model %>% summary()
+model2 <- build_model2()
+model2 %>% summary()
 
 
 
@@ -251,7 +251,7 @@ print_dot_callback <- callback_lambda(
 epochs <- 300
 
 # Fit the model and store training stats
-history <- model %>% fit(
+history3 <- model2 %>% fit(
   train_data,
   train_labels,
   epochs = epochs,
@@ -268,7 +268,7 @@ library(ggplot2)
 #plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
 #  coord_cartesian(ylim = c(0, 5))
 
-plot(history, metrics = "mean_absolute_error", smooth = FALSE) 
+plot(history3, metrics = "mean_absolute_error", smooth = FALSE) 
 
 
 #This graph shows little improvement in the model after about 150 epochs. 
@@ -282,7 +282,7 @@ plot(history, metrics = "mean_absolute_error", smooth = FALSE)
 early_stop <- callback_early_stopping(monitor = "val_loss", patience = 50)
 
 #model <- build_model()
-history <- model %>% fit(
+history4 <- model %>% fit(
   train_data,
   train_labels,
   epochs = epochs,
@@ -291,25 +291,25 @@ history <- model %>% fit(
   callbacks = list(early_stop, print_dot_callback)
 )
 
-plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
+plot(history4, metrics = "mean_absolute_error", smooth = FALSE) +
   coord_cartesian(xlim = c(0, 125), ylim = c(4, 16)) #
 
 
 
-# Let's see how did the model performs on the test set:
+# Let's see how did the model2 performs on the test set:
 
-c(loss, mae) %<-% (model %>% evaluate(test_data, test_labels, verbose = 0))
+c(loss, mae) %<-% (model2 %>% evaluate(test_data, test_labels, verbose = 0))
 
 paste0("Mean absolute error on test set:", sprintf("%.2f", mae),"%")
 
-model %>% evaluate(test_data, test_labels)
+model2 %>% evaluate(test_data, test_labels)
 
 
 #
 # PREDICT 
 # Predict some Gap Fraction using data in the testing set:
 
-test_predictions <- model %>% predict(test_data)
+test_predictions <- model2 %>% predict(test_data)
 test_predictions[ , 1]
 
 mean((test_labels-test_predictions)^2)
