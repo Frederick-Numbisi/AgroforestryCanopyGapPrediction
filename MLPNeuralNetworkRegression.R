@@ -27,9 +27,7 @@ sess = tf$Session()
 hello <- tf$constant('Hello, TensorFlow!')
 sess$run(hello)
 
-
-#  REGRESSION TRIAL WITH TENSORFLOW
-
+# Create Training and Test Datasets
 
 setwd("F:/Users/fnkeumoe/GapFraction_NNdata")
 
@@ -81,8 +79,7 @@ train_labels[1:10] # Display first 10 entries
 
 
 
-# NORMALISING THE MODEL
-
+# NORMALISING THE THE TRAINING AND TEST DATA
 # Test data is *not* used when calculating the mean and std.
 
 # Normalize training data
@@ -96,10 +93,14 @@ test_data <- scale(test_data, center = col_means_train, scale = col_stddevs_trai
 train_data[1, ] # First training sample, normalized
 
 
+# CREATING AND TESTING DIFFERENT NEURAL NETWORK REGRESSION MODELS WITH TENSORFLOW
+# a) Create functions for Model Evalulation
 
-# CREATING THE MODEL
 
-build_model1 <- function() {
+
+# Build Different Models
+
+NNmodel1 <- function() {
   
   model <- keras_model_sequential() %>%
     layer_dense(units = 128, activation = "relu",
@@ -113,29 +114,52 @@ build_model1 <- function() {
   
   model %>% compile(
     loss = "mse",
-    optimizer = optimizer_rmsprop(lr=0.003),
-    metrics = list("mean_absolute_error")
+    optimizer = optimizer_rmsprop(lr=0.003), # set optimisation by root mean square proportion with learning rate =0.003
+    metrics = list("mean_absolute_error") # evaluate model performance using the MAE (Mean Absolute Error) Metric
   )
   
-  model
+  model # return the compiled model
 }
 
-model1 <- build_model1()
-model1 %>% summary()
+NNregModel1 <- build_model1()
+NNregModel1 %>% summary()
 
 
+# TRAINING THE MODEL, DISPLAY MODEL DESCRIPTION AND MODEL STATISTICS
+statsModel <- function(nnModel, epochs=100){
 
-# TRAINING THE MODEL
+  Modelused <- nnModel
+  Modelused %>% summary()
 
-# Display training progress by printing a single dot for each completed epoch.
-print_dot_callback <- callback_lambda(
+  # Display training progress by printing a single dot for each completed epoch.
+  print_dot_callback <- callback_lambda(
   on_epoch_end = function(epoch, logs) {
     if (epoch %% 80 == 0) cat("\n")
     cat(".")
   }
 )    
 
-epochs <- 100
+  # Fit the model and store training stats
+  modelStats <- Modelused %>% fit(
+    train_data,
+    train_labels,
+    epochs = epochs,
+    validation_split = 0.2,
+    #verbose = 0,
+    callbacks = list(print_dot_callback)
+  )
+  
+  modelStats
+  
+}
+
+
+# Example : Run function for Neural Network Model1 with 100 Epochs
+statsModel(NNmodel1, 100)
+
+  
+  
+  epochs <- 100
 
 # Fit the model and store training stats
 history1 <- model1 %>% fit(
@@ -324,7 +348,7 @@ plot(test_predictions,test_labels)
 # CREATING THE MODEL
 
 
-build_model <- function() {
+build_model3 <- function() {
   
   model <- keras_model_sequential() %>%
     layer_dense(units = 128, activation = "tanh", kernel_initializer='RandomNormal',
@@ -353,8 +377,8 @@ build_model <- function() {
   model
 }
 
-model <- build_model()
-model %>% summary()
+model3 <- build_mode3l()
+model3 %>% summary()
 
 
 
@@ -371,7 +395,7 @@ print_dot_callback <- callback_lambda(
 epochs <- 300
 
 # Fit the model and store training stats
-history <- model %>% fit(
+history5 <- model3 %>% fit(
   train_data,
   train_labels,
   epochs = epochs,
@@ -388,7 +412,7 @@ library(ggplot2)
 #plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
 #  coord_cartesian(ylim = c(0, 5))
 
-plot(history, metrics = "mean_absolute_error", smooth = FALSE) 
+plot(history5, metrics = "mean_absolute_error", smooth = FALSE) 
 
 
 #This graph shows little improvement in the model after about 150 epochs. 
